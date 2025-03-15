@@ -15,7 +15,7 @@ local function get_random_files(folder_path, num_files)
 
     -- Get all wav files in the folder
     local files = {}
-    local valid_extensions = { ".wav", ".WAV", ".aif", ".AIF", ".aiff", ".AIFF" }
+    local valid_extensions = { ".wav", ".WAV", ".flac", ".FLAC", ".aif", ".AIF", ".aiff", ".AIFF", ".mp3" }
 
     print("Checking folder: " .. folder_path)
 

@@ -42,14 +42,28 @@ function gui.show_random_sample_dialog()
     local DIALOG_BUTTON_HEIGHT = renoise.ViewBuilder.DEFAULT_DIALOG_BUTTON_HEIGHT
     local TEXT_WIDTH = 100
     local CONTROL_WIDTH = 200
+    local INPUT_WIDTH = 150 -- New consistent width for all inputs
 
     local vb = renoise.ViewBuilder()
 
     local folder_textfield = vb:textfield {
-        width = CONTROL_WIDTH,
+        width = INPUT_WIDTH,
         value = current_folder,
         notifier = function(value)
             current_folder = value
+        end
+    }
+
+    local browse_button = vb:button {
+        text = "Browse",
+        width = INPUT_WIDTH,
+        height = DIALOG_BUTTON_HEIGHT,
+        notifier = function()
+            local path = renoise.app():prompt_for_path("Select Sample Folder")
+            if path and path ~= "" then
+                current_folder = path
+                folder_textfield.value = path
+            end
         end
     }
 
@@ -57,7 +71,7 @@ function gui.show_random_sample_dialog()
         min = 1,
         max = 100,
         value = current_samples,
-        width = 50,
+        width = INPUT_WIDTH,
         notifier = function(value)
             current_samples = value
         end
@@ -77,7 +91,7 @@ function gui.show_random_sample_dialog()
 
         vb:horizontal_aligner {
             mode = "justify",
-            width = TEXT_WIDTH + CONTROL_WIDTH + CONTROL_SPACING,
+            width = TEXT_WIDTH + INPUT_WIDTH + CONTROL_SPACING,
 
             vb:column {
                 vb:text {
@@ -93,7 +107,23 @@ function gui.show_random_sample_dialog()
 
         vb:horizontal_aligner {
             mode = "justify",
-            width = TEXT_WIDTH + CONTROL_WIDTH + CONTROL_SPACING,
+            width = TEXT_WIDTH + INPUT_WIDTH + CONTROL_SPACING,
+
+            vb:column {
+                vb:text {
+                    width = TEXT_WIDTH,
+                    text = "Browse:"
+                }
+            },
+
+            vb:column {
+                browse_button
+            }
+        },
+
+        vb:horizontal_aligner {
+            mode = "justify",
+            width = TEXT_WIDTH + INPUT_WIDTH + CONTROL_SPACING,
 
             vb:column {
                 vb:text {
@@ -107,7 +137,6 @@ function gui.show_random_sample_dialog()
             }
         },
 
-        vb:space { height = 10 },
 
         vb:horizontal_aligner {
             mode = "center",
