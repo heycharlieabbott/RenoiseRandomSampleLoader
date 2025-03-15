@@ -69,7 +69,7 @@ function gui.show_random_sample_dialog()
 
     local samples_valuebox = vb:valuebox {
         min = 1,
-        max = 100,
+        max = 120,
         value = current_samples,
         width = INPUT_WIDTH,
         notifier = function(value)
