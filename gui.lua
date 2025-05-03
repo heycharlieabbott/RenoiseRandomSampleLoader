@@ -155,6 +155,26 @@ function gui.show_random_sample_dialog()
         notifier = invoke_current_random
     }
 
+    local clear_samples_button = vb:button {
+        text = "Clear All Samples",
+        width = CONTROL_WIDTH,
+        height = DIALOG_BUTTON_HEIGHT,
+        notifier = function()
+            local song = renoise.song()
+            local instrument = song.selected_instrument
+
+            if not instrument then
+                renoise.app():show_warning("No instrument selected")
+                return
+            end
+
+            -- Remove all samples
+            while #instrument.samples > 0 do
+                instrument:delete_sample_at(1)
+            end
+        end
+    }
+
     local content_view = vb:column {
         uniform = true,
         margin = DIALOG_MARGIN,
@@ -243,6 +263,11 @@ function gui.show_random_sample_dialog()
         vb:horizontal_aligner {
             mode = "center",
             process_button
+        },
+
+        vb:horizontal_aligner {
+            mode = "center",
+            clear_samples_button
         }
     }
 
